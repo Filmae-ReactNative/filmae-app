@@ -9,11 +9,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-vector-icons/feather": "^4.29.2-alpha.35",
+    "@react-navigation/bottom-tabs": "^7.0.6",
+    "@react-navigation/native": "^7.0.3",
     "expo": "~52.0.7",
     "expo-status-bar": "~2.0.0",
     "projeto-filmae": "file:",
     "react": "18.3.1",
-    "react-native": "0.76.2"
+    "react-native": "0.76.2",
+    "react-native-vector-icons": "^10.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
