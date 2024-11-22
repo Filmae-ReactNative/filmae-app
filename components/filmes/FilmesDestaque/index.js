@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Image, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { fetchMoviesByCategory } from '../../../services/api';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './style'; 
-import { Dimensions } from 'react-native';
-
-const { width } = Dimensions.get('window');
+import ModalDetalhes from '../../model/ModelFilmes'; 
 
 const FilmesDestaque = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
   const flatListRef = useRef(null); 
   const indexRef = useRef(0); 
   const isUserInteracting = useRef(false); 
@@ -52,6 +53,11 @@ const FilmesDestaque = () => {
 
   const handleScrollEndDrag = () => {
     isUserInteracting.current = false;
+  };
+
+  const handleMoviePress = (movie) => {
+    setSelectedMovie(movie);
+    setModalVisible(true);
   };
 
   const renderStars = (rating) => {
@@ -104,7 +110,10 @@ const FilmesDestaque = () => {
         pagingEnabled
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.movieItem}>
+          <TouchableOpacity
+            style={styles.movieItem}
+            onPress={() => handleMoviePress(item)} // Ao clicar no filme, abre o modal
+          >
             <Image
               source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
               style={styles.poster}
@@ -116,11 +125,18 @@ const FilmesDestaque = () => {
               <View style={styles.starsContainer}>{renderStars(item.vote_average)}</View>
               <Text style={styles.movieRating}>{`${item.vote_average.toFixed(1)} / 10`}</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         showsHorizontalScrollIndicator={false}
         onScrollBeginDrag={handleScrollBeginDrag}
         onScrollEndDrag={handleScrollEndDrag}
+      />
+
+      {/* Modal */}
+      <ModalDetalhes 
+        visible={modalVisible} 
+        movie={selectedMovie} 
+        onClose={() => setModalVisible(false)} 
       />
     </View>
   );

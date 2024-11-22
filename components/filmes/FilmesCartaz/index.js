@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { fetchMoviesByCategory } from '../../../services/api';  
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 import { styles } from "../FilmesCartaz/style";
+import ModalDetalhes from '../../model/ModelFilmes'; 
 
 const FilmesCartaz = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false); // Estado para controlar a visibilidade do modal
+  const [selectedMovie, setSelectedMovie] = useState(null); // Estado para o filme selecionado
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -48,6 +51,11 @@ const FilmesCartaz = () => {
     return stars;
   };
 
+  const handleMoviePress = (movie) => {
+    setSelectedMovie(movie); // Define o filme selecionado
+    setModalVisible(true); // Exibe o modal
+  };
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -68,7 +76,11 @@ const FilmesCartaz = () => {
     <View style={styles.container}>
       <ScrollView horizontal={true} style={styles.carousel}>
         {movies.map((movie) => (
-          <View key={movie.id} style={styles.movieItem}>
+          <TouchableOpacity
+            key={movie.id}
+            style={styles.movieItem}
+            onPress={() => handleMoviePress(movie)} // Abre o modal ao clicar no filme
+          >
             <Image
               source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
               style={styles.poster}
@@ -83,9 +95,16 @@ const FilmesCartaz = () => {
                 {movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'} / 10
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
+
+      {/* Modal */}
+      <ModalDetalhes 
+        visible={modalVisible} 
+        movie={selectedMovie} 
+        onClose={() => setModalVisible(false)} 
+      />
     </View>
   );
 };

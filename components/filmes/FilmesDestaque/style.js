@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
     width: 400,
     height: 400,
     borderRadius: 8,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
+    
   },
   movieTitle: {
     position: 'absolute',
