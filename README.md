@@ -22,4 +22,4 @@ O **Filmaê** é um aplicativo mobile desenvolvido com **React Native**, projeta
    npm install
 4. Inicie o servidor de desenvolvimento:
    ```bash
-   expo start
+   npx expo start
