@@ -5,27 +5,33 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Home from '../screens/Home';
 import Perfil from '../screens/Perfil';
 import Review from '../screens/Review';
-import { View, Image, StyleSheet } from 'react-native';
+import { SafeAreaView, Image, StyleSheet } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 export default function Routes() {
   return (
     <Tab.Navigator
+      view
       screenOptions={{
         headerShown: true, 
         header: () => (
-          <View style={styles.header}>
+          <SafeAreaView style={styles.header}>
             <Image
               source={require('../assets/Filmae.jpeg')} 
               style={styles.logo}
             />
-          </View>
+          </SafeAreaView>
         ),
         tabBarActiveTintColor: '#FCA311',
         tabBarInactiveTintColor: '#fff',
         tabBarActiveBackgroundColor: '#13213C',
         tabBarInactiveBackgroundColor: '#13213C',
+        tabBarStyle: {
+          borderTopWidth: 0, 
+          elevation: 0, 
+          shadowOpacity: 0,
+        },
       }}
     >
       <Tab.Screen

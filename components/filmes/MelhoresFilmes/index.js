@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { fetchMoviesByCategory } from '../../../services/api';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { styles } from "../MelhoresFilmes/style";
+import { styles } from './style'; // Estilos de MelhoresFilmes
+import MovieModal from '../../model/ModelFilmes'; 
+
 const MelhoresFilmes = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false); // Controle de visibilidade do modal
+  const [selectedMovie, setSelectedMovie] = useState(null); // Armazena o filme selecionado
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -24,24 +28,31 @@ const MelhoresFilmes = () => {
   }, []);
 
   const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating / 2); 
+    const fullStars = Math.floor(rating / 2);
     const halfStar = rating % 2 >= 1 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStar;
 
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<Icon key={`full-${i}`} name="star" size={12} color="#FFD700" />);
-    }
+    return (
+      <>
+        {[...Array(fullStars)].map((_, i) => (
+          <Icon key={`full-${i}`} name="star" size={12} color="#FFD700" />
+        ))}
+        {halfStar ? <Icon key="half" name="star-half" size={12} color="#FFD700" /> : null}
+        {[...Array(emptyStars)].map((_, i) => (
+          <Icon key={`empty-${i}`} name="star-o" size={12} color="#FFD700" />
+        ))}
+      </>
+    );
+  };
+// Modal
+  const handleMoviePress = (movie) => {
+    setSelectedMovie(movie); 
+    setModalVisible(true); 
+  };
 
-    if (halfStar) {
-      stars.push(<Icon key="half" name="star-half" size={12} color="#FFD700" />);
-    }
-
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<Icon key={`empty-${i}`} name="star-o" size={12} color="#FFD700" />);
-    }
-
-    return stars;
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedMovie(null); // Limpa o filme selecionado
   };
 
   if (loading) {
@@ -68,10 +79,15 @@ const MelhoresFilmes = () => {
         style={styles.carousel}
         showsHorizontalScrollIndicator={false}>
         {movies.map((movie) => (
-          <View key={movie.id} style={styles.movieItem}>
+          <TouchableOpacity
+            key={movie.id}
+            style={styles.movieItem}
+            onPress={() => handleMoviePress(movie)} // Chama a função ao clicar no filme
+          >
             <Image
               source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
               style={styles.poster}
+              resizeMode="cover"
             />
             <Text style={styles.movieTitle} numberOfLines={1}>
               {movie.title}
@@ -80,12 +96,18 @@ const MelhoresFilmes = () => {
               <View style={styles.starsContainer}>{renderStars(movie.vote_average)}</View>
               <Text style={styles.movieRating}>{`${movie.vote_average.toFixed(1)} / 10`}</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
+
+      {/* Modal para exibir detalhes do filme */}
+      <MovieModal
+        visible={modalVisible}
+        movie={selectedMovie}
+        onClose={closeModal}
+      />
     </View>
   );
 };
-
 
 export default MelhoresFilmes;
