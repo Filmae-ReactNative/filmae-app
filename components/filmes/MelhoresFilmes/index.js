@@ -3,7 +3,7 @@ import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity } fr
 import { fetchMoviesByCategory } from '../../../services/api';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from './style'; 
-import MovieModal from '../../model/ModelFilmes'; 
+import MovieModal from '../../modal/ModalFilmes'; 
 
 const MelhoresFilmes = () => {
   const [movies, setMovies] = useState([]);
