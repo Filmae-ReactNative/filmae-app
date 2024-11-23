@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, ActivityIndicator, TouchableOpacity } from
 import { fetchMoviesByCategory } from '../../../services/api';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './style'; 
-import ModalDetalhes from '../../model/ModelFilmes'; 
+import ModalDetalhes from '../../modal/ModalFilmes'; 
 
 const FilmesDestaque = () => {
   const [movies, setMovies] = useState([]);
