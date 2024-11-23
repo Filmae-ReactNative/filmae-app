@@ -54,7 +54,7 @@ const ModelFilmes = ({ visible, movie, onClose }) => {
     return <Text style={modalStyles.modalLocation}>Não disponível em nenhuma plataforma, somente nos cinema.</Text>;
   };
 
-  if (!movie) return null; // Se não houver filme, não renderiza o modal
+  if (!movie) return null; 
 
   return (
     <Modal
