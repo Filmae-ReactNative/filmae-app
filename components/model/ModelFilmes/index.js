@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, Image, TouchableOpacity } from 'react-native';
 import { modalStyles } from './style'; 
-import { fetchMovieProviders } from '../../../services/api';
+import { fetchMovieProviders } from '../../../services/api'; // Importa a função da API
 
 const ModelFilmes = ({ visible, movie, onClose }) => {
   const [providers, setProviders] = useState(null);
@@ -51,7 +51,7 @@ const ModelFilmes = ({ visible, movie, onClose }) => {
         </>
       );
     }
-    return <Text style={modalStyles.modalLocation}>Não disponível em nenhuma plataforma ou cinema.</Text>;
+    return <Text style={modalStyles.modalLocation}>Não disponível em nenhuma plataforma, somente nos cinema.</Text>;
   };
 
   if (!movie) return null; 

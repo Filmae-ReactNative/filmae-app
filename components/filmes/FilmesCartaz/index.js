@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { fetchMoviesByCategory } from '../../../services/api';  
-import Icon from 'react-native-vector-icons/FontAwesome'; 
-import { styles } from "../FilmesCartaz/style";
-import ModalDetalhes from '../../model/ModelFilmes'; 
+import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { fetchMoviesByCategory } from '../../../services/api';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { styles } from './style'; 
+import MovieModal from '../../model/ModelFilmes'; 
 
-const FilmesCartaz = () => {
+const MelhoresFilmes = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false); // Estado para controlar a visibilidade do modal
-  const [selectedMovie, setSelectedMovie] = useState(null); // Estado para o filme selecionado
+  const [modalVisible, setModalVisible] = useState(false); 
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
     const loadMovies = async () => {
       try {
-        const data = await fetchMoviesByCategory('now_playing'); 
+        const data = await fetchMoviesByCategory('now_playing');
         setMovies(data);
       } catch (err) {
         setError('Erro ao carregar filmes.');
@@ -50,15 +50,21 @@ const FilmesCartaz = () => {
 
     return stars;
   };
-
+// Modal
   const handleMoviePress = (movie) => {
-    setSelectedMovie(movie); // Define o filme selecionado
-    setModalVisible(true); // Exibe o modal
+    setSelectedMovie(movie); 
+    setModalVisible(true); 
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedMovie(null); 
   };
 
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
         <Text style={styles.loadingText}>Carregando filmes...</Text>
       </View>
     );
@@ -74,39 +80,42 @@ const FilmesCartaz = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal={true} style={styles.carousel}>
+      <ScrollView
+        horizontal
+        style={styles.carousel}
+        showsHorizontalScrollIndicator={false}>
         {movies.map((movie) => (
           <TouchableOpacity
             key={movie.id}
             style={styles.movieItem}
-            onPress={() => handleMoviePress(movie)} // Abre o modal ao clicar no filme
+            onPress={() => handleMoviePress(movie)} 
           >
             <Image
               source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
               style={styles.poster}
+              resizeMode="cover"
             />
-            <Text style={styles.movieTitle} numberOfLines={1} ellipsizeMode="tail">
+            <Text style={styles.movieTitle} numberOfLines={1}>
               {movie.title}
             </Text>
-
             <View style={styles.ratingContainer}>
-              <Text style={styles.movieRating}>
-                <View style={styles.starsContainer}>{renderStars(movie.vote_average)}</View>
-                {movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'} / 10
-              </Text>
+              <View style={styles.starsContainer}>{renderStars(movie.vote_average)}</View>
+              <Text style={styles.movieRating}>{`${movie.vote_average.toFixed(1)} / 10`}</Text>
             </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
 
-      {/* Modal */}
-      <ModalDetalhes 
-        visible={modalVisible} 
-        movie={selectedMovie} 
-        onClose={() => setModalVisible(false)} 
+      {/* Modal para exibir detalhes do filme */}
+      <MovieModal
+        visible={modalVisible}
+        movie={selectedMovie}
+        onClose={closeModal}
       />
     </View>
   );
 };
 
-export default FilmesCartaz;
+export default MelhoresFilmes;
+
+
