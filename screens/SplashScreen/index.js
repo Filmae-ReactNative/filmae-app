@@ -4,12 +4,14 @@ import React, { useEffect } from 'react';
 import { View, Text, Animated, Image } from 'react-native';
 import {styles} from './style';
 import Logo from '../../assets/logoFilmae1.png';
+import { useNavigation } from '@react-navigation/native';
 
 const SplashScreen = () => {
   const opacidadeLogo = new Animated.Value(0);
   const escalaLogo = new Animated.Value(0);
   const opacidadeTexto = new Animated.Value(0);
   const posicaoTexto = new Animated.Value(50);
+  const navigation = useNavigation();
 
   useEffect(() => {
     Animated.sequence([
@@ -40,6 +42,13 @@ const SplashScreen = () => {
         }),
       ]),
     ]).start();
+
+    const timer = setTimeout(() => {
+      navigation.replace('MainApp')
+    }, 4000);
+
+    return () => clearTimeout(timer);
+
   }, []);
 
   return (
