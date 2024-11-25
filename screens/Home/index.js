@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
-import FilmesCartaz from '../../components/filmes/FilmesCartaz';
-import FilmesDestaque from '../../components/filmes/FilmesDestaque';
-import MelhoresFilmes from '../../components/filmes/MelhoresFilmes';
+
+import React from "react";
+import { View, ScrollView, Text, StyleSheet } from "react-native";
+import FilmesCartaz from "../../components/filmes/FilmesCartaz";
+import FilmesDestaque from "../../components/filmes/FilmesDestaque";
+import MelhoresFilmes from "../../components/filmes/MelhoresFilmes";
+
 
 const Home = () => {
   return (

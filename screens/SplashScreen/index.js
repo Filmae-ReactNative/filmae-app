@@ -44,12 +44,12 @@ const SplashScreen = () => {
     ]).start();
 
     const timer = setTimeout(() => {
-      navigation.replace('MainApp')
+
+      navigation.replace("Login");
     }, 4000);
 
     return () => clearTimeout(timer);
-
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -62,11 +62,13 @@ const SplashScreen = () => {
           },
         ]}
       >
+
         <Image 
           source={Logo} 
           style={styles.logo}
           resizeMode="contain"
         />
+
       </Animated.View>
 
       <Animated.View
@@ -82,7 +84,7 @@ const SplashScreen = () => {
         <Text style={styles.subtitulo}>
           Sua jornada cinematográfica começa aqui
         </Text>
-        
+
       </Animated.View>
       <LottieView
         source={Estrelas}
