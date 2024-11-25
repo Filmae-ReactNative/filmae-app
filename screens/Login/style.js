@@ -61,4 +61,12 @@ export const styles = StyleSheet.create({
     textDecorationLine: "underline",
     textAlign: "center",
   },
+  mensagemContainer: {
+    marginVertical: 15,
+    alignItems: "center",
+  },
+  mensagem: {
+    fontSize: 14,
+    textAlign: "center",
+  },
 });

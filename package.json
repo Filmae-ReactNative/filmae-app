@@ -9,27 +9,25 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-vector-icons/feather": "^4.29.2-alpha.35",
     "@react-navigation/bottom-tabs": "^7.0.6",
-
     "@react-navigation/native": "^7.0.4",
     "@react-navigation/native-stack": "^7.1.1",
-
     "@react-navigation/stack": "^7.0.6",
     "axios": "^1.7.7",
     "expo": "~52.0.10",
     "expo-status-bar": "~2.0.0",
+    "firebase": "^11.0.2",
     "lottie-react-native": "^7.1.0",
     "projeto-filmae": "file:",
     "react": "18.3.1",
-
     "react-native": "0.76.3",
     "react-native-animatable": "^1.4.0",
     "react-native-config": "^1.5.3",
     "react-native-reanimated": "^3.16.2",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.1.0",
-
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "15.8.0",
     "react-native-swiper": "^1.6.0",

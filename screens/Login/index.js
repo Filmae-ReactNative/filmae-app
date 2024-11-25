@@ -9,6 +9,8 @@ import {
 import React from "react";
 import { styles } from "./style";
 import { useState } from "react";
+import { fazerLogin } from "../../services/firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -16,16 +18,46 @@ export default function Login({ navigation }) {
   const [mensagem, setMensagem] = useState("");
   const [tipoMensagem, setTipoMensagem] = useState("");
 
-  const handleLogin = () => {
+  const salvarDadosNoAsyncStorage = async (usuario) => {
+    try {
+      await AsyncStorage.setItem("@dadosUsuario", JSON.stringify(usuario));
+      console.log("Dados salvos no AsyncStorage");
+    } catch (error) {
+      console.error("Erro ao salvar dados no AsyncStorage:", error);
+    }
+  };
+
+  const handleLogin = async () => {
     if (!email || !senha) {
       setMensagem("Por favor, preencha todos os campos.");
       setTipoMensagem("error");
-    } else {
+      return;
+    }
+  
+    try {
+      const usuario = await fazerLogin(email, senha);
+
+      await salvarDadosNoAsyncStorage({
+        email: usuario.email,
+        displayName: usuario.displayName || "Usuário",
+        uid: usuario.uid,
+      });
+      
       setMensagem("Login realizado com sucesso!");
       setTipoMensagem("success");
-      navigation.navigate("Home");
+      navigation.navigate("MainApp");
+    } catch (error) {
+      let errorMessage = "Erro ao fazer login. Tente novamente.";
+      
+     if (error.code === 'auth/user-not-found') {
+          errorMessage = "Usuário não encontrado.";
+      }
+  
+      setMensagem(errorMessage);
+      setTipoMensagem("error");
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logo}>
@@ -35,6 +67,7 @@ export default function Login({ navigation }) {
         />
       </View>
       <Text style={styles.title}>Login</Text>
+
       <Text style={styles.text}>Email</Text>
       <TextInput
         placeholder="Digite um email..."
@@ -55,7 +88,7 @@ export default function Login({ navigation }) {
         onChangeText={setSenha}
       />
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
@@ -67,6 +100,20 @@ export default function Login({ navigation }) {
           Ainda não possui uma conta? Cadastre-se
         </Text>
       </TouchableOpacity>
+
+      {mensagem ? (
+      <View style={styles.mensagemContainer}>
+        <Text
+          style={[
+            styles.mensagem,
+            { color: tipoMensagem === "success" ? "green" : "red" },
+          ]}
+        >
+          {mensagem}
+        </Text>
+      </View>
+    ) : null}
+    
     </SafeAreaView>
   );
 }
