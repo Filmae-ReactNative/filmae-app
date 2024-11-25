@@ -15,7 +15,6 @@ const Filme = ({ movie }) => {
 
   return (
     <View>
-      {/* Card do filme */}
       <TouchableOpacity style={styles.container} onPress={handleOpenModal}>
         <Image
           style={styles.poster}
@@ -29,7 +28,6 @@ const Filme = ({ movie }) => {
         </View>
       </TouchableOpacity>
 
-      {/* Modal do filme */}
       <ModelFilmes
         visible={modalVisible}
         movie={movie}
