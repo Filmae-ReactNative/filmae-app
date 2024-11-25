@@ -60,3 +60,30 @@ export const fetchMovieProviders = async (movieId) => {
     return { availableStreaming: [], cinemasAvailable: [] }; // Retorna listas vazias caso não haja dados
   }
 };
+
+
+export const fetchMoviesByQuery = async (query, page = 1) => {
+  try {
+    if (!query || query.trim() === '') {
+      throw new Error('Texto de busca inválido.');
+    }
+
+    const response = await api.get('search/movie', {
+      params: {
+        query, 
+        page, 
+        language: 'pt-BR',
+        region: 'BR', 
+      },
+    });
+
+    if (response.data && response.data.results) {
+      return response.data.results;
+    } else {
+      throw new Error(`Nenhum filme encontrado para: ${query}`);
+    }
+  } catch (error) {
+    console.error('Erro ao buscar filmes pela query:', error.message || error);
+    throw new Error('Erro ao buscar filmes. Tente novamente mais tarde.');
+  }
+};
