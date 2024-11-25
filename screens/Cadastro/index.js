@@ -6,14 +6,14 @@ import {
   Image,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { styles } from "./style";
-import { useState } from "react";
 import { fazerLogin } from "../../services/firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState("");
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState(""); 
   const [senha, setSenha] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [tipoMensagem, setTipoMensagem] = useState("");
@@ -28,7 +28,7 @@ export default function Login({ navigation }) {
   };
 
   const handleLogin = async () => {
-    if (!email || !senha) {
+    if (!email || !senha || !nome) { 
       setMensagem("Por favor, preencha todos os campos.");
       setTipoMensagem("error");
       return;
@@ -39,7 +39,7 @@ export default function Login({ navigation }) {
 
       await salvarDadosNoAsyncStorage({
         email: usuario.email,
-        displayName: usuario.displayName || "Usuário",
+        displayName: usuario.displayName || nome, 
         uid: usuario.uid,
       });
       
@@ -68,16 +68,13 @@ export default function Login({ navigation }) {
       </View>
       <Text style={styles.title}>Cadastro</Text>
       
-      <Text style={styles.text}></Text>
-
       <Text style={styles.text}>Nome</Text>
       <TextInput
         placeholder="Digite um nome..."
         style={styles.input}
-        keyboardType="email-address"
         placeholderTextColor="#aaa"
-        value={email}
-        onChangeText={setEmail}
+        value={nome}  
+        onChangeText={setNome} 
       />
 
       <Text style={styles.text}>Email</Text>
@@ -86,8 +83,8 @@ export default function Login({ navigation }) {
         style={styles.input}
         keyboardType="email-address"
         placeholderTextColor="#aaa"
-        value={email}
-        onChangeText={setEmail}
+        value={email} 
+        onChangeText={setEmail} 
       />
 
       <Text style={styles.text}>Senha</Text>
@@ -108,21 +105,21 @@ export default function Login({ navigation }) {
         style={styles.buttonCadastro}
         onPress={() => navigation.navigate("Cadastro")}
       >
-        
+        {}
       </TouchableOpacity>
 
       {mensagem ? (
-      <View style={styles.mensagemContainer}>
-        <Text
-          style={[
-            styles.mensagem,
-            { color: tipoMensagem === "success" ? "green" : "red" },
-          ]}
-        >
-          {mensagem}
-        </Text>
-      </View>
-    ) : null}
+        <View style={styles.mensagemContainer}>
+          <Text
+            style={[
+              styles.mensagem,
+              { color: tipoMensagem === "success" ? "green" : "red" },
+            ]}
+          >
+            {mensagem}
+          </Text>
+        </View>
+      ) : null}
     
     </SafeAreaView>
   );
