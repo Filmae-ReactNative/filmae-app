@@ -5,58 +5,45 @@ import {
   TextInput,
   Image,
   View,
+  ActivityIndicator
 } from "react-native";
 import React from "react";
 import { styles } from "./style";
 import { useState } from "react";
-import { fazerLogin } from "../../services/firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { cadastrarUsuario } from "../../services/firebaseConfig";
 
-export default function Login({ navigation }) {
+export default function Cadastro({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [nome, setNome] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [tipoMensagem, setTipoMensagem] = useState("");
 
-  const salvarDadosNoAsyncStorage = async (usuario) => {
-    try {
-      await AsyncStorage.setItem("@dadosUsuario", JSON.stringify(usuario));
-      console.log("Dados salvos no AsyncStorage");
-    } catch (error) {
-      console.error("Erro ao salvar dados no AsyncStorage:", error);
-    }
-  };
-
-  const handleLogin = async () => {
-    if (!email || !senha) {
+  const handleCadastrar = async () => {
+    if (!email || !senha || !nome) {
       setMensagem("Por favor, preencha todos os campos.");
       setTipoMensagem("error");
       return;
     }
+
+    setTipoMensagem("loading");
   
     try {
-      const usuario = await fazerLogin(email, senha);
-
-      await salvarDadosNoAsyncStorage({
-        email: usuario.email,
-        displayName: usuario.displayName || "Usuário",
-        uid: usuario.uid,
-      });
-      
+      setTipoMensagem("loading"); 
+      const usuario = await cadastrarUsuario(email, senha, nome);
+  
       setMensagem("Cadastro realizado com sucesso!");
       setTipoMensagem("success");
-      navigation.navigate("MainApp");
-    } catch (error) {
-      let errorMessage = "Erro ao cadastrar. Tente novamente.";
-      
-     if (error.code === 'auth/user-not-found') {
-          errorMessage = "Usuário não encontrado.";
-      }
   
-      setMensagem(errorMessage);
+      setTimeout(() => {
+        navigation.navigate("Login");
+      }, 1000); 
+    } catch (error) {
+      setMensagem("Houve um erro ao cadastrar. Tente novamente.");
       setTipoMensagem("error");
     }
   };
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,17 +54,17 @@ export default function Login({ navigation }) {
         />
       </View>
       <Text style={styles.title}>Cadastro</Text>
-      
+
       <Text style={styles.text}></Text>
 
       <Text style={styles.text}>Nome</Text>
       <TextInput
         placeholder="Digite um nome..."
         style={styles.input}
-        keyboardType="email-address"
+        keyboardType="default"
         placeholderTextColor="#aaa"
-        value={email}
-        onChangeText={setEmail}
+        value={nome}
+        onChangeText={setNome}
       />
 
       <Text style={styles.text}>Email</Text>
@@ -100,30 +87,27 @@ export default function Login({ navigation }) {
         onChangeText={setSenha}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Criar Conta</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.buttonCadastro}
-        onPress={() => navigation.navigate("Cadastro")}
-      >
-        
-      </TouchableOpacity>
+      {tipoMensagem === "loading" ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={handleCadastrar}>
+          <Text style={styles.buttonText}>Criar Conta</Text>
+        </TouchableOpacity>
+      )}
 
       {mensagem ? (
-      <View style={styles.mensagemContainer}>
         <Text
-          style={[
-            styles.mensagem,
-            { color: tipoMensagem === "success" ? "green" : "red" },
-          ]}
+          style={{
+            marginTop: 20,
+            color: tipoMensagem === "success" ? "green" : "red",
+            textAlign: "center",
+            fontSize: 16,
+          }}
         >
           {mensagem}
         </Text>
-      </View>
-    ) : null}
-    
+      ) : null}
     </SafeAreaView>
   );
 }
+

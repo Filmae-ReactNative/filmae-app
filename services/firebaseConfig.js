@@ -7,7 +7,7 @@ import {
   deleteUser,
   signOut,
 } from "firebase/auth";
-import { doc, setDoc, deleteDoc, getFirestore } from "firebase/firestore";
+import { doc, setDoc, deleteDoc, getFirestore, addDoc, collection } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD1bP05yz0_N8LDdbfMtJu4aI8JOGhfnUA",
@@ -21,6 +21,29 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+
+export const cadastrarUsuario = async (email, senha, nome) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+    const user = userCredential.user;
+
+    await updateProfile(user, { displayName: nome });
+
+    const usuariosRef = collection(db, "usuarios");
+    await addDoc(usuariosRef, {
+      nome: nome,
+      email: email,
+      criadoEm: new Date()
+    });
+
+    return user;
+  } catch (error) {
+    console.error("Erro no cadastro:", error);
+    throw error;
+  }
+};
+
 
 export const fazerLogin = async (email, senha) => {
   try {

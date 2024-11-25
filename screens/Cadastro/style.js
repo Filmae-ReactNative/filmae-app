@@ -69,4 +69,8 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
+  loadingIcon: {
+    marginTop: 20, 
+    alignSelf: "center", 
+  }
 });

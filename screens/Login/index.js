@@ -21,7 +21,6 @@ export default function Login({ navigation }) {
   const salvarDadosNoAsyncStorage = async (usuario) => {
     try {
       await AsyncStorage.setItem("@dadosUsuario", JSON.stringify(usuario));
-      console.log("Dados salvos no AsyncStorage");
     } catch (error) {
       console.error("Erro ao salvar dados no AsyncStorage:", error);
     }
