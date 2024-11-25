@@ -29,7 +29,7 @@ export default function Cadastro({ navigation }) {
     setTipoMensagem("loading");
   
     try {
-      setTipoMensagem("loading"); 
+      setTipoMensagem("loading"); // Exibir carregando
       const usuario = await cadastrarUsuario(email, senha, nome);
   
       setMensagem("Cadastro realizado com sucesso!");
