@@ -1,17 +1,17 @@
-import LottieView from "lottie-react-native";
-import Estrelas from "../../assets/animations/estrelas.json";
-import React, { useEffect } from "react";
-import { View, Text, Animated, Image } from "react-native";
-import { styles } from "./style";
-import Logo from "../../assets/logoFilmae1.png";
-import { useNavigation } from "@react-navigation/native";
+import LottieView from 'lottie-react-native';
+import Estrelas from '../../assets/animations/estrelas.json';
+import React, { useEffect } from 'react';
+import { View, Text, Animated, Image } from 'react-native';
+import {styles} from './style';
+import Logo from '../../assets/logoFilmae1.png';
+import { useNavigation } from '@react-navigation/native';
 
 const SplashScreen = () => {
-  const navigation = useNavigation();
   const opacidadeLogo = new Animated.Value(0);
   const escalaLogo = new Animated.Value(0);
   const opacidadeTexto = new Animated.Value(0);
   const posicaoTexto = new Animated.Value(50);
+  const navigation = useNavigation();
 
   useEffect(() => {
     Animated.sequence([
@@ -44,6 +44,7 @@ const SplashScreen = () => {
     ]).start();
 
     const timer = setTimeout(() => {
+
       navigation.replace("Login");
     }, 4000);
 
@@ -61,7 +62,13 @@ const SplashScreen = () => {
           },
         ]}
       >
-        <Image source={Logo} style={styles.logo} resizeMode="contain" />
+
+        <Image 
+          source={Logo} 
+          style={styles.logo}
+          resizeMode="contain"
+        />
+
       </Animated.View>
 
       <Animated.View
@@ -77,6 +84,7 @@ const SplashScreen = () => {
         <Text style={styles.subtitulo}>
           Sua jornada cinematográfica começa aqui
         </Text>
+
       </Animated.View>
       <LottieView
         source={Estrelas}
@@ -90,3 +98,4 @@ const SplashScreen = () => {
 };
 
 export default SplashScreen;
+

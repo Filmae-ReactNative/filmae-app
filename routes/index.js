@@ -1,3 +1,4 @@
+
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -12,8 +13,9 @@ import SplashScreen from "../screens/SplashScreen";
 import { SafeAreaView, Image, StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-export default function Routes() {
+function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -21,15 +23,16 @@ export default function Routes() {
         header: () => (
           <SafeAreaView style={styles.header}>
             <Image
-              source={require("../assets/Filmae.jpeg")} // Atualize o caminho, se necessário
+              source={require('../assets/Filmae.jpeg')} 
               style={styles.logo}
             />
           </SafeAreaView>
         ),
-        tabBarActiveTintColor: "#FCA311",
-        tabBarInactiveTintColor: "#fff",
-        tabBarActiveBackgroundColor: "#13213C",
-        tabBarInactiveBackgroundColor: "#13213C",
+
+        tabBarActiveTintColor: '#FCA311',
+        tabBarInactiveTintColor: '#fff',
+        tabBarActiveBackgroundColor: '#13213C',
+        tabBarInactiveBackgroundColor: '#13213C',
         tabBarStyle: {
           borderTopWidth: 0,
           elevation: 0,
@@ -41,27 +44,27 @@ export default function Routes() {
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return <Feather name="home" color={color} size={size} />;
-          },
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="home" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen
         name="Perfil"
         component={Perfil}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return <Feather name="user" color={color} size={size} />;
-          },
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="user" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen
         name="Review"
         component={Review}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return <MaterialCommunityIcons name="fire" color={color} size={size} />;
-          },
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="fire" color={color} size={size} />
+          ),
         }}
       />
     </Tab.Navigator>
@@ -86,16 +89,16 @@ export default function Routes() {
 
 const styles = StyleSheet.create({
   header: {
-    width: "100%",
+    width: '100%',
     height: 70,
-    backgroundColor: "#10192E",
-    justifyContent: "center",
-    alignItems: "flex-start",
+    backgroundColor: '#10192E',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     paddingLeft: 10,
   },
   logo: {
     width: 150,
     height: 50,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
 });
