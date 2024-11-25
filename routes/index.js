@@ -1,13 +1,16 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Home from '../screens/Home';
-import Perfil from '../screens/Perfil';
-import Review from '../screens/Review';
-import SplashScreen from '../screens/SplashScreen';
-import { SafeAreaView, Image, StyleSheet, View } from 'react-native';
+
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import Feather from "react-native-vector-icons/Feather";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Login from "../screens/Login";
+import Cadastro from "../screens/Cadastro";
+import Home from "../screens/Home";
+import Perfil from "../screens/Perfil";
+import Review from "../screens/Review";
+import SplashScreen from "../screens/SplashScreen";
+import { SafeAreaView, Image, StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -20,11 +23,12 @@ function TabNavigator() {
         header: () => (
           <SafeAreaView style={styles.header}>
             <Image
-              source={require('../assets/Filmae.jpeg')} // Atualize o caminho, se necessário
+              source={require('../assets/Filmae.jpeg')} 
               style={styles.logo}
             />
           </SafeAreaView>
         ),
+
         tabBarActiveTintColor: '#FCA311',
         tabBarInactiveTintColor: '#fff',
         tabBarActiveBackgroundColor: '#13213C',
@@ -76,6 +80,8 @@ export default function Routes() {
       initialRouteName="Splash"
     >
       <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Cadastro" component={Cadastro} />
       <Stack.Screen name="MainApp" component={TabNavigator} />
     </Stack.Navigator>
   );
